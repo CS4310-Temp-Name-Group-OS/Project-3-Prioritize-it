@@ -22,7 +22,6 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include "Wait.h"
-//#include "lib/libposix/sys/wait/waitpid.cpp"
 
 Wait::Wait(int argc, char **argv)
     : POSIXApplication(argc, argv)
@@ -38,15 +37,32 @@ Wait::~Wait()
 Wait::Result Wait::exec()
 {   // parse for PID
     int pid = atoi(arguments().get("PID"));
-    // allocate int for status
+    
+    if (pid <= 0)
+    {
+        printf("Invalid argument.\n");
+        return InvalidArgument;
+    }
+
+    // Initialize status location
     int status;
 
-    pid_t result = waitpid(pid, &status, 0);
-    
-    if ((status >> 16) == 0) {
+    // Call waitpid and check result
+    pid_t result = waitpid((pid_t)pid, &status, 0);
+
+    if (result == (pid_t) pid)
+    {
         return Success;
-    } else {
+    }
+    else if (errno == ESRCH)
+    {
+        printf("PID not found.\n");
         return NotFound;
+    }
+    else
+    {
+        printf("I/O Error.\n");
+        return IOError;
     }
     // Done
 }
