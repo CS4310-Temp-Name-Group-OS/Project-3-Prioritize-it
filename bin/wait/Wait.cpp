@@ -27,7 +27,7 @@
 Wait::Wait(int argc, char **argv)
     : POSIXApplication(argc, argv)
 {
-    parser().setDescription("Suspend thread until a child terminates");
+    parser().setDescription("Suspend thread until specified process terminates");
     parser().registerPositional("PID", "PID of Process to wait");
 }
 
