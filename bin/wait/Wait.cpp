@@ -40,7 +40,8 @@ Wait::Result Wait::exec()
     
     if (pid <= 0)
     {
-        printf("Invalid argument.\n");
+        errno = EINVAL;
+        ERROR("Errno: " << errno << "\n\r" << strerror(errno));
         return InvalidArgument;
     }
 
@@ -50,7 +51,7 @@ Wait::Result Wait::exec()
     // Call waitpid and check result
     pid_t result = waitpid((pid_t)pid, &status, 0);
 
-    if (result == (pid_t) pid)
+    if (result == (pid_t)pid)
     {
         return Success;
     }
