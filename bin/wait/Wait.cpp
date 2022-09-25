@@ -56,12 +56,12 @@ Wait::Result Wait::exec()
     }
     else if (errno == ESRCH)
     {
-        printf("PID not found.\n");
+        ERROR("Errno: " << errno << "\n\r" << strerror(errno));
         return NotFound;
     }
     else
     {
-        printf("I/O Error.\n");
+        ERROR("Errno: " << errno << "\n\r" << strerror(errno));
         return IOError;
     }
     // Done
