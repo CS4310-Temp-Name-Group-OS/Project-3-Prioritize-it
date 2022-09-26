@@ -22,13 +22,12 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include "Wait.h"
-//#include "lib/libposix/sys/wait/waitpid.cpp"
 
 Wait::Wait(int argc, char **argv)
     : POSIXApplication(argc, argv)
 {
-    parser().setDescription("Suspend thread until specified process terminates");
-    parser().registerPositional("PID", "PID of Process to wait");
+    parser().setDescription("Suspend execution of calling thread until specified process terminates");
+    parser().registerPositional("PID", "Process ID of the process to wait");
 }
 
 Wait::~Wait()
@@ -36,17 +35,36 @@ Wait::~Wait()
 }
 
 Wait::Result Wait::exec()
-{   // parse for PID
+{   // Parse for PID
     int pid = atoi(arguments().get("PID"));
-    // allocate int for status
+    
+    // User input validation
+    if (pid <= 0)
+    {
+        errno = EINVAL;
+        ERROR("Errno: " << errno << "\n" << strerror(errno));
+        return InvalidArgument;
+    }
+
+    // Initialize space for stat_loc
     int status;
 
-    pid_t result = waitpid(pid, &status, 0);
-    
-    if ((status >> 16) == 0) {
+    // Call waitpid, check result, and display error if neccessary
+    pid_t result = waitpid((pid_t)pid, &status, 0);
+
+    if (result == (pid_t)pid)
+    {
         return Success;
-    } else {
+    }
+    else if (errno == ESRCH)
+    {
+        ERROR("Errno: " << errno << "\n" << strerror(errno));
         return NotFound;
+    }
+    else
+    {
+        ERROR("Errno: " << errno << "\n" << strerror(errno));
+        return IOError;
     }
     // Done
 }
