@@ -26,8 +26,8 @@
 Wait::Wait(int argc, char **argv)
     : POSIXApplication(argc, argv)
 {
-    parser().setDescription("Suspend thread until specified process terminates");
-    parser().registerPositional("PID", "PID of Process to wait");
+    parser().setDescription("Suspend execution of calling thread until specified process terminates");
+    parser().registerPositional("PID", "Process ID of the process to wait");
 }
 
 Wait::~Wait()
@@ -35,20 +35,21 @@ Wait::~Wait()
 }
 
 Wait::Result Wait::exec()
-{   // parse for PID
+{   // Parse for PID
     int pid = atoi(arguments().get("PID"));
     
+    // User input validation
     if (pid <= 0)
     {
         errno = EINVAL;
-        ERROR("Errno: " << errno << "\n\r" << strerror(errno));
+        ERROR("Errno: " << errno << "\n" << strerror(errno));
         return InvalidArgument;
     }
 
-    // Initialize status location
+    // Initialize space for stat_loc
     int status;
 
-    // Call waitpid and check result
+    // Call waitpid, check result, and display error if neccessary
     pid_t result = waitpid((pid_t)pid, &status, 0);
 
     if (result == (pid_t)pid)
@@ -57,12 +58,12 @@ Wait::Result Wait::exec()
     }
     else if (errno == ESRCH)
     {
-        ERROR("Errno: " << errno << "\n\r" << strerror(errno));
+        ERROR("Errno: " << errno << "\n" << strerror(errno));
         return NotFound;
     }
     else
     {
-        ERROR("Errno: " << errno << "\n\r" << strerror(errno));
+        ERROR("Errno: " << errno << "\n" << strerror(errno));
         return IOError;
     }
     // Done
