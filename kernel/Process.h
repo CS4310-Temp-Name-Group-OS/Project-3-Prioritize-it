@@ -71,6 +71,15 @@ class Process
         Stopped
     };
 
+    enum Priority
+    {
+        Level_One,
+        Level_Two,
+        Level_Three,
+        Level_Four,
+        Level_Five
+    };
+
   public:
 
     /**
@@ -101,6 +110,13 @@ class Process
      * @return Process ID of our parent.
      */
     ProcessID getParent() const;
+
+    /**
+     * Retrieve process Priority.
+     *
+     * @return Priority of our process.
+     */
+    Priority getPriority() const;
 
     /**
      * Get Wait ID.
@@ -260,6 +276,9 @@ class Process
 
     /** Privilege level */
     bool m_privileged;
+
+    /** Priority level */
+    Priority m_priority;
 
     /** Entry point of the program */
     Address m_entry;
