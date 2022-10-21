@@ -71,15 +71,6 @@ class Process
         Stopped
     };
 
-    enum Priority
-    {
-        Level_One,
-        Level_Two,
-        Level_Three,
-        Level_Four,
-        Level_Five
-    };
-
   public:
 
     /**
@@ -116,7 +107,7 @@ class Process
      *
      * @return Priority of our process.
      */
-    Priority getPriority() const;
+    PriorityNumber getPriority() const;
 
     /**
      * Get Wait ID.
