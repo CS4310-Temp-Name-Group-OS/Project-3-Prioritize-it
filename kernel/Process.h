@@ -269,7 +269,7 @@ class Process
     bool m_privileged;
 
     /** Priority level */
-    Priority m_priority;
+    PriorityNumber m_priority;
 
     /** Entry point of the program */
     Address m_entry;
