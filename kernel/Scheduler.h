@@ -53,6 +53,8 @@ class Scheduler
      */
     Scheduler();
 
+    ~Scheduler();
+
     /**
      * Get number of processes on the schedule
      *
@@ -90,7 +92,11 @@ class Scheduler
   private:
 
     /** Contains processes ready to run */
-    Queue<Process *, MAX_PROCS> m_queue;
+    Queue<Process *, MAX_QUEUE_PROCS> m_queue1;
+    Queue<Process *, MAX_QUEUE_PROCS> m_queue2;
+    Queue<Process *, MAX_QUEUE_PROCS> m_queue3;
+    Queue<Process *, MAX_QUEUE_PROCS> m_queue4;
+    Queue<Process *, MAX_QUEUE_PROCS> m_queue5;
 };
 
 /**

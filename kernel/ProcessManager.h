@@ -37,6 +37,7 @@ class Scheduler;
  * Maximum number of processes.
  */
 #define MAX_PROCS 1024
+#define MAX_QUEUE_PROCS 204
 
 /**
  * Represents a process which may run on the host.
