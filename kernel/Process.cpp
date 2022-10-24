@@ -113,6 +113,11 @@ void Process::setParent(ProcessID id)
     m_parent = id;
 }
 
+void Process::setPriority(PriorityNumber prio)
+{
+    m_priority = prio;
+}
+
 Process::Result Process::wait(ProcessID id)
 {
     if (m_state != Ready)

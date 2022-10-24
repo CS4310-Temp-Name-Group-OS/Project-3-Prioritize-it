@@ -248,6 +248,11 @@ class Process
      */
     void setParent(ProcessID id);
 
+    /**
+     * Set process Prioirty.
+     */
+    void setPriority(PriorityNumber prio);
+
   protected:
 
     /** Process Identifier */
