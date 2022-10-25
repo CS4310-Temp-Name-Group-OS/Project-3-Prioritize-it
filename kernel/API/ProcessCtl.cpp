@@ -31,7 +31,14 @@ API::Result ProcessCtlHandler(const ProcessID procID,
 {
     const Arch::MemoryMap map;
     Process *proc = ZERO;
-    ProcessInfo *info = (ProcessInfo *) addr;
+    if (action == SetPriority)
+    {
+        PriorityNumber *prio = (PriorityNumber *) addr;
+    }
+    else
+    {
+        ProcessInfo *info = (ProcessInfo *) addr;
+    }
     ProcessManager *procs = Kernel::instance()->getProcessManager();
     Timer *timer;
 
@@ -71,14 +78,6 @@ API::Result ProcessCtlHandler(const ProcessID procID,
         return (API::Result) procs->current()->getParent();
 
     case SetPriority: 
-        if (action == SetPriority)
-        {
-             PriorityNumber *prio = (PriorityNumber *) addr;
-        }
-        else if (action == InfoPID)
-        {
-            ProcessInfo *info = (ProcessInfo *) addr;
-        }
         
         break;
 
