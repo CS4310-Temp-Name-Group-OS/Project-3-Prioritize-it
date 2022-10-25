@@ -36,12 +36,13 @@ API::Result ProcessCtlHandler(const ProcessID procID,
 
     if (action == SetPriority)
     {
-        *prio = (PriorityNumber *) addr;
+        prio = (PriorityNumber *) addr;
     }
     else
     {
-        *info = (ProcessInfo *) addr;
+        info = (ProcessInfo *) addr;
     }
+
     ProcessManager *procs = Kernel::instance()->getProcessManager();
     Timer *timer;
 
