@@ -38,5 +38,33 @@ Renice::~Renice(){
 
 Renice::Result Renice::exec()
 {
-    
+    int pid = atoi(arguments().get("PID"));
+    int prio = atoi(arguments().get("PRIO"));
+
+    //check user input validation
+    if (pid <= 0 || prio < 0 || prio > 5)
+    {
+        errno = EINVAL;
+        ERROR("Errno: " << errno << "\n" << strerror(errno));
+        return InvalidArgument;
+    }
+
+    //
+    pid_t result = renicepid((pid_t)pid, (PriorityNumber*) prio);
+
+    if (result == (pid_t)pid)
+    {
+        return Success;
+    }
+    else if (errno == ESRCH)
+    {
+        ERROR("Errno: " << errno << "\n" << strerror(errno));
+        return NotFound;
+    }
+    else
+    {
+        ERROR("Errno: " << errno << "\n" << strerror(errno));
+        return IOError;
+    }
+
 }
