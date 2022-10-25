@@ -110,6 +110,11 @@ class Process
     PriorityNumber getPriority() const;
 
     /**
+     * Set process Prioirty.
+     */
+    void setPriority(PriorityNumber prio);
+
+    /**
      * Get Wait ID.
      */
     ProcessID getWait() const;
@@ -247,11 +252,6 @@ class Process
      * Set parent process ID.
      */
     void setParent(ProcessID id);
-
-    /**
-     * Set process Prioirty.
-     */
-    void setPriority(PriorityNumber prio);
 
   protected:
 

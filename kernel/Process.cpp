@@ -73,6 +73,12 @@ PriorityNumber Process::getPriority() const
     return m_priority;
 }
 
+void Process::setPriority(PriorityNumber prio)
+{
+    m_priority = prio;
+}
+
+
 ProcessID Process::getWait() const
 {
     return m_waitId;
@@ -111,11 +117,6 @@ bool Process::isPrivileged() const
 void Process::setParent(ProcessID id)
 {
     m_parent = id;
-}
-
-void Process::setPriority(PriorityNumber prio)
-{
-    m_priority = prio;
 }
 
 Process::Result Process::wait(ProcessID id)

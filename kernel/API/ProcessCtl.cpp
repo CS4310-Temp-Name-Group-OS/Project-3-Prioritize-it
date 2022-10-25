@@ -86,7 +86,7 @@ API::Result ProcessCtlHandler(const ProcessID procID,
             ERROR("failed to stop PID " << proc->getID());
             return API::IOError;
         }
-        proc->SetPriority(*prio);
+        proc->setPriority(*prio);
         if (procs->resume(proc) != ProcessManager::Success)
         {
             ERROR("failed to resume PID " << proc->getID());
