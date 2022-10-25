@@ -23,6 +23,20 @@
 
 extern C pid_t renicepid(pid_t pid, PriorityNumber * prio)
 {
+    const ulong result = (ulong) ProcessCtl(pid, SetPriority, (Address) prio );
 
+    switch ((const API::Result) result)
+    {
+        case API::NotFound:
+            errno = ESRCH;
+            return (pid_t) -1;
+
+        case API::Success:
+            return pid;
+
+        default:
+            errno = EIO;
+            return (pid_t) -1;
+    }
 
 }
