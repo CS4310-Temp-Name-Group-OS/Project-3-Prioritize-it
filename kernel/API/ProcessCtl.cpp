@@ -33,7 +33,7 @@ API::Result ProcessCtlHandler(const ProcessID procID,
     Process *proc = ZERO;
     PriorityNumber *prio = ZERO;
     ProcessInfo *info = ZERO;
-    
+
     if (action == SetPriority)
     {
         PriorityNumber *prio = (PriorityNumber *) addr;
@@ -81,7 +81,18 @@ API::Result ProcessCtlHandler(const ProcessID procID,
         return (API::Result) procs->current()->getParent();
 
     case SetPriority: 
-        
+         if (procs->stop(proc) != ProcessManager::Success)
+        {
+            ERROR("failed to stop PID " << proc->getID());
+            return API::IOError;
+        }
+        proc->SetPriority(*prio);
+        if (procs->resume(proc) != ProcessManager::Success)
+        {
+            ERROR("failed to resume PID " << proc->getID());
+            return API::IOError;
+        }
+        procs->schedule();
         break;
 
     case Schedule:
