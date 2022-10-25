@@ -70,7 +70,16 @@ API::Result ProcessCtlHandler(const ProcessID procID,
     case GetParent:
         return (API::Result) procs->current()->getParent();
 
-    case SetPriority:
+    case SetPriority: 
+        if (action == SetPriority)
+        {
+             PriorityNumber *prio = (PriorityNumber *) addr;
+        }
+        else if (action == InfoPID)
+        {
+            ProcessInfo *info = (ProcessInfo *) addr;
+        }
+        
         break;
 
     case Schedule:
