@@ -42,7 +42,7 @@ Renice::Result Renice::exec()
     int prio = atoi(arguments().get("PRIO"));
 
     //check user input validation
-    if (pid <= 0 || prio < 1 || prio > 5)
+    if (pid < 0 || prio < 1 || prio > 5)
     {
         errno = EINVAL;
         ERROR("Errno: " << errno << "\n" << strerror(errno));
