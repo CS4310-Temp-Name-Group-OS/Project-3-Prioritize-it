@@ -82,17 +82,27 @@ API::Result ProcessCtlHandler(const ProcessID procID,
         return (API::Result) procs->current()->getParent();
 
     case SetPriority: 
-         if (procs->stop(proc) != ProcessManager::Success)
+
+        if (proc->getState() == Process::Ready)
         {
-            ERROR("failed to stop PID " << proc->getID());
-            return API::IOError;
+            if (procs->stop(proc) != ProcessManager::Success)
+            {
+                ERROR("failed to stop PID " << proc->getID());
+                return API::IOError;
+            }
+            
+            proc->setPriority(*prio);
+            
+            if (procs->resume(proc) != ProcessManager::Success)
+            {
+                ERROR("failed to resume PID " << proc->getID());
+                return API::IOError;
+            }
+
+        } else {
+            proc->setPriority(*prio);
         }
-        proc->setPriority(*prio);
-        if (procs->resume(proc) != ProcessManager::Success)
-        {
-            ERROR("failed to resume PID " << proc->getID());
-            return API::IOError;
-        }
+
         procs->schedule();
         break;
 
