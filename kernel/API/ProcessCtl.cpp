@@ -31,6 +31,9 @@ API::Result ProcessCtlHandler(const ProcessID procID,
 {
     const Arch::MemoryMap map;
     Process *proc = ZERO;
+    PriorityNumber *prio = ZERO;
+    ProcessInfo *info = ZERO;
+    
     if (action == SetPriority)
     {
         PriorityNumber *prio = (PriorityNumber *) addr;
